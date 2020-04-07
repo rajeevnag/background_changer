@@ -11,9 +11,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
+image_urls = set()
 
-with open('images.txt','w') as file:
-    for i in range(10):
+with open('images_urls.txt','w') as file:
+    for i in range(20): #get 20 images at least
 
         driver.implicitly_wait(30)
         driver.get(url)
@@ -27,8 +28,14 @@ with open('images.txt','w') as file:
         uClient.close()
         page_soup = soup(page_html, "html.parser")
         images = page_soup.find_all('img', {'src':re.compile('.jpg')})
+
         for image in images:
-            file.write(image['src'] + '\n')
+            curr_url = image['src']
+            image_urls.add(curr_url)
+
+    for url in image_urls:
+        file.write(url + '\n')
+
 
 
 
