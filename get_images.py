@@ -8,12 +8,11 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 
-
 driver = webdriver.Chrome(ChromeDriverManager().install())
 image_urls = set()
 
 with open('images_urls.txt','w') as file:
-    for i in range(20): #get 20 images at least
+    for i in range(10): #get x images at least
 
         driver.implicitly_wait(30)
         driver.get(url)
@@ -35,3 +34,7 @@ with open('images_urls.txt','w') as file:
     for url in image_urls:
         file.write(url + '\n')
 
+driver.close()
+
+import os
+os.system('python3 download_images.py')
