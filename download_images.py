@@ -6,7 +6,7 @@ from os import path
 import shutil
 
 
-images_folder = '/Users/Pictures/earth_images'
+images_folder = 'images/'
 
 if path.exists(images_folder): #remove all images in folder by deleting folder
     shutil.rmtree(images_folder)
@@ -24,22 +24,6 @@ for url in urls:
     req.urlretrieve(url,full_path)
     file_number += 1
 
-from appscript import app, mactypes
-import random
-
-random_file_number = random.randint(1,file_number+1) #get random file number
-
-random_file = 'earth_image_' +str(random_file_number) +'.jpg' #get file name
-
-import subprocess
-
-SCRIPT = """/usr/bin/osascript<<END
-tell application "Finder"
-set desktop picture to POSIX file "%s"
-end tell
-END"""
-
-subprocess.Popen(SCRIPT%random_file, shell=True)
 
 
 
