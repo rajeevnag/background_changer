@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen as urlReq
 import re
 
-
 url = 'https://earthview.withgoogle.com'
 
 from selenium import webdriver
@@ -35,8 +34,4 @@ with open('images_urls.txt','w') as file:
 
     for url in image_urls:
         file.write(url + '\n')
-
-
-
-
 
