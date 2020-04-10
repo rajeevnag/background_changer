@@ -1,4 +1,5 @@
 # background_changer
+Earthview for google earth style images taken and set to background for computer <br />
 MAC ONLY <br />
 Create new folder on machine and pull github code to that folder. <br />
 Run code as follows: <br /> 
