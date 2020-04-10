@@ -12,7 +12,9 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 image_urls = set()
 
 with open('images_urls.txt','w') as file:
-    for i in range(10): #get x images at least
+    import sys
+    x = sys.argv[1]
+    for i in range(int(sys.argv[1])): #get input for number of images at least
 
         driver.implicitly_wait(30)
         driver.get(url)
