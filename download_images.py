@@ -17,12 +17,13 @@ os.mkdir(images_folder) #remake folder for images
 with open('images_urls.txt','r') as file:
     urls = file.readlines()
 
-file_number = 0
-for url in urls:
-    filename = 'earth_image_' + str(file_number) + '.jpg'
+it = iter(urls)
+for pair in it:
+    country = pair.replace(' ','_')
+    filename = country.replace('\n','') + '.jpg'
     full_path = '{}{}'.format(images_folder,filename)
+    url = next(it).replace('\n','')
     req.urlretrieve(url,full_path)
-    file_number += 1
 
 
 

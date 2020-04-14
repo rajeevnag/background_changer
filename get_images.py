@@ -10,10 +10,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 try:
     driver = webdriver.Chrome(ChromeDriverManager().install())
     image_urls = set()
-
+    countries = set()
+    num_unknown = 1
     with open('images_urls.txt','w') as file:
         import sys
-        for i in range(int(sys.argv[1])): #get input for number of images at least
+        if len(sys.argv) == 2:
+            num_images = sys.argv[1]
+        else:
+            num_images = 5
+        for i in range(int(num_images)): #get input for number of images at least
 
             driver.implicitly_wait(30)
             driver.get(url)
@@ -27,14 +32,23 @@ try:
             uClient.close()
             page_soup = soup(page_html, "html.parser")
             images = page_soup.find_all('img', {'src':re.compile('.jpg')})
+            country_name = page_soup.find_all('div', {'class':'location__country'})
 
             for image in images:
                 curr_url = image['src']
                 image_urls.add(curr_url)
+            
+            if country_name[0].next != '':
+                countries.add(country_name[0].next)
+            else:
+                countries.add('Uknown_image' + str(num_unknown))
+                num_unknown += 1
+            
+        print(countries)
 
-        for url in image_urls:
+        for country,url in zip(countries,image_urls):
+            file.write(country + '\n')
             file.write(url + '\n')
-
 
     driver.close()
 
