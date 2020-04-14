@@ -17,7 +17,7 @@ try:
         if len(sys.argv) == 2:
             num_images = sys.argv[1]
         else:
-            num_images = 5
+            num_images = 10
         for i in range(int(num_images)): #get input for number of images at least
 
             driver.implicitly_wait(30)
