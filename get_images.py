@@ -7,6 +7,9 @@ url = 'https://earthview.withgoogle.com'
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.keys import Keys
+
+
 import time
 try:
     driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -21,13 +24,15 @@ try:
             num_images = 50
 
         last_country = str()
+        driver.get(url)
+        button = driver.find_element_by_class_name('intro__explore')
+        button.click() #try
+
         while len(image_urls) != int(num_images): #get input for number of images at least
-            driver.implicitly_wait(30)
-            time.sleep(2)
-            driver.get(url)
-            menu = driver.find_element_by_class_name('main')
-            actions = ActionChains(driver)
-            actions.double_click(menu)
+            time.sleep(.3)
+            #actions.double_click(button)
+
+            
             url = driver.current_url
 
             uClient = urlReq(url)
@@ -51,6 +56,8 @@ try:
                             file.write(country_name[0].next + '\n')
 
                         file.write(curr_url + '\n')
+
+                driver.find_element_by_tag_name('body').send_keys(Keys.RIGHT)
             except:
                 pass
 
