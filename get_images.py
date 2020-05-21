@@ -25,13 +25,11 @@ try:
 
         last_country = str()
         driver.get(url)
+        
         button = driver.find_element_by_class_name('intro__explore')
-        button.click() #try
-
+        button.click()
         while len(image_urls) != int(num_images): #get input for number of images at least
-            time.sleep(.3)
-            #actions.double_click(button)
-
+            time.sleep(.2)
             
             url = driver.current_url
 
@@ -46,14 +44,25 @@ try:
                     curr_url = image['src']
                     if curr_url not in image_urls: #new image
                         image_urls.add(curr_url)
+                        curr_name = str()
                         
-                        if country_name[0].next in duplicate_countries:
-                            duplicate_countries[country_name[0].next] += 1
-                            file.write(country_name[0].next)
-                            file.write(str(duplicate_countries[country_name[0].next]) + '\n')
+                        try:
+                            curr_name += country_name[0].previous
+                            curr_name +='-'
+                            curr_name += country_name[0].next
+                        except:
+                            curr_name = str()
+                            curr_name += "unknown"
+                            curr_name +='-'
+                            curr_name += country_name[0].next
+
+                        if curr_name in duplicate_countries: #check if seen before
+                            duplicate_countries[curr_name] += 1
+                            file.write(curr_name)
+                            file.write(str(duplicate_countries[curr_name]) + '\n')
                         else:
-                            duplicate_countries[country_name[0].next] = 1
-                            file.write(country_name[0].next + '\n')
+                            duplicate_countries[curr_name] = 1
+                            file.write(curr_name + '\n')
 
                         file.write(curr_url + '\n')
 
@@ -68,7 +77,6 @@ try:
     os.system('python3 download_images.py')
 except:
     driver.close()
-    breakpoint()
     print("error")
 
 
