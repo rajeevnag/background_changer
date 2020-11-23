@@ -1,34 +1,60 @@
-from bs4 import BeautifulSoup as soup
-from urllib.request import urlopen as urlReq
-import re
-
-url = 'https://earthview.withgoogle.com'
-
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
-
-
+import argparse
 import time
+import os
+from bs4 import BeautifulSoup as soup
+from urllib.request import urlopen as urlReq
+import re
+import sys
+
+
+
+url = 'https://earthview.withgoogle.com'
+
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+
+    # Required positional argument
+    parser.add_argument('--num_images', type=int, default=50,
+                        help='A required integer positional argument')
+
+    # Optional argument for foldername
+    parser.add_argument('--folder', type=str, default = None,
+                        help='A required integer positional argument')
+
+    args = parser.parse_args()
+
+    num_images = args.num_images
+    
+    folder_name = args.folder
+
+    return num_images, folder_name
+
+
+
+
+
 try:
     driver = webdriver.Chrome(ChromeDriverManager().install())
     image_urls = set()
     countries = list()
     duplicate_countries = {}
+
+    num_images, folder_name = parse_arguments()
+
     with open('images_urls.txt','w') as file:
-        import sys
-        if len(sys.argv) == 2:
-            num_images = sys.argv[1]
-        else:
-            num_images = 50
 
         last_country = str()
         driver.get(url)
         
         button = driver.find_element_by_class_name('intro__explore')
         button.click()
-        while len(image_urls) != int(num_images): #get input for number of images at least
+        while len(image_urls) != num_images: #get input for number of images at least
             time.sleep(.2)
             
             url = driver.current_url
@@ -72,11 +98,22 @@ try:
 
 
     driver.close()
+    
+    optional_folder_name = f" --folder {folder_name}"
+    command = "python3 download_images.py"
+    
+    if folder_name is not None:
+        command = command + optional_folder_name
 
-    import os
-    os.system('python3 download_images.py')
+    print(command)
+    os.system(command)
 except:
     driver.close()
-    print("error")
+
+
+
+
+
+
 
 
